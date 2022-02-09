@@ -1,20 +1,35 @@
 import React from 'react';
 import './App.css';
-import {Typography} from "@mui/material";
+import {Header} from "./components/layout/Header";
+import {Routes, Route} from 'react-router-dom'
 
+const Home = () => {
+    return (
+        <>
+            <h2>Home</h2>
+        </>
+    );
+};
+
+const About = () => {
+    return (
+        <>
+            <h2>About</h2>
+        </>
+    );
+};
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Typography variant={"h1"} fontWeight={"bold"}>
-          Quidle
-        </Typography>
-          <Typography variant={"subtitle1"} fontWeight={"bold"}>
-          Equidistant meet ups
-        </Typography>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <Header/>
+            <Routes>
+                <Route index element={<Home />} />
+                <Route path="home" element={<Home />} />
+                <Route path="dashboard" element={<About />} />
+                <Route path="*" element={'404'} />
+            </Routes>
+        </>
+    );
 }
 
 export default App;

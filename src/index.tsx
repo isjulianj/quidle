@@ -7,12 +7,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider as MaterialThemeProvider} from "@mui/material";
 import {theme} from "./lib/theme";
 
+import {
+    BrowserRouter
+} from 'react-router-dom';
+
 ReactDOM.render(
     <React.StrictMode>
+        <BrowserRouter>
         <CssBaseline/>
         <MaterialThemeProvider theme={theme}>
             <App/>
         </MaterialThemeProvider>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );
