@@ -6,8 +6,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Typography variant={"h4"} fontWeight={"bold"}>
+        <Typography variant={"h1"} fontWeight={"bold"}>
           Quidle
+        </Typography>
+          <Typography variant={"subtitle1"} fontWeight={"bold"}>
+          Equidistant meet ups
         </Typography>
       </header>
     </div>
