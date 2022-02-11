@@ -2,14 +2,8 @@ import React from 'react';
 import './App.css';
 import {Header} from "./components/layout/Header";
 import {Routes, Route} from 'react-router-dom'
-
-const Home = () => {
-    return (
-        <>
-            <h2>Home</h2>
-        </>
-    );
-};
+import {Meetings} from "./modules/meetings/compositions/meetings";
+import {MeetingsLocalCacheAdapter} from "./lib/services/MeetingCacheAdapter";
 
 const About = () => {
     return (
@@ -18,13 +12,17 @@ const About = () => {
         </>
     );
 };
+
+const meetingsStoreAdapter = new MeetingsLocalCacheAdapter();
+
+
 function App() {
     return (
         <>
             <Header/>
             <Routes>
-                <Route index element={<Home />} />
-                <Route path="home" element={<Home />} />
+                <Route index element={<Meetings meetingsCacheProvider={meetingsStoreAdapter} />} />
+                {/*<Route path="meetings" element={<Meetings />} />*/}
                 <Route path="dashboard" element={<About />} />
                 <Route path="*" element={'404'} />
             </Routes>

@@ -1,3 +1,3 @@
 import MaterialTypography from '@mui/material/Typography'
 
-export const Typography = MaterialTypography;
+export const Text = MaterialTypography;
