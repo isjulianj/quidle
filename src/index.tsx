@@ -6,18 +6,39 @@ import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider as MaterialThemeProvider} from "@mui/material";
 import {theme} from "./lib/theme";
-
-import {
-    BrowserRouter
-} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
+import Meetings from "./routes/meetings";
+import {MeetingComp} from "./routes/meeting";
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-        <CssBaseline/>
-        <MaterialThemeProvider theme={theme}>
-            <App/>
-        </MaterialThemeProvider>
+            <CssBaseline/>
+            <MaterialThemeProvider theme={theme}>
+                <Routes>
+                    <Route path="/" element={<App/>}>
+                        <Route path="/" element={<Navigate replace to="/meetings" />} />
+                        <Route path="meetings" element={<Meetings/>}/>
+                        <Route path=":meetingId" element={<MeetingComp />} />
+                        <Route
+                            path="*"
+                            element={
+                                <main style={{padding: '1rem'}}>
+                                    <p>There's nothing here!</p>
+                                </main>
+                            }
+                        />
+                    </Route>
+
+                </Routes>
+                {/*<Routes>*/}
+                {/*    <Route index element={<Meetings meetingsCacheProvider={meetingsStoreAdapter} />} />*/}
+                {/*    /!*<Route path="meetingsOverview" element={<Meetings />} />*!/*/}
+                {/*    <Route path="dashboard" element={<About />} />*/}
+                {/*    <Route path="*" element={'404'} />*/}
+                {/*</Routes>*/}
+
+            </MaterialThemeProvider>
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
