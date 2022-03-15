@@ -1,9 +1,12 @@
 import React from 'react';
-import {MeetingsOverview} from "../modules/meetingsOverview/compositions/meetingsOverview";
-import {MeetingsLocalCacheAdapter} from "../lib/services/MeetingCacheAdapter";
+import {MeetingsOverview} from "../modules/meetings/compositions/meetings";
 
-const meetingsStoreAdapter = new MeetingsLocalCacheAdapter();
 
- const Meetings = () => {return (<MeetingsOverview meetingsCacheProvider={meetingsStoreAdapter}/>)}
+const Meetings = () => {
+    return (
+        <MeetingsOverview/>
+
+    )
+}
 
 export default Meetings

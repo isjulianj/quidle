@@ -1,42 +1,51 @@
-import React, {ReactNode, useEffect, useState} from 'react';
+import React, {ReactNode, useContext, useEffect} from 'react';
 import {Box, Button, Text} from '../../../../lib/ui-components';
 import {ICache} from "../../../../lib/services/ICache";
 import {MEETINGS} from "../../../../lib/services/MeetingCacheAdapter";
-import {Meeting} from "../../../../core/domain/models/meeting";
+import {useNavigate, useParams} from "react-router-dom";
+import {CacheContext} from "../../../../context/cache";
+import {MeetingCard} from "../../components/meetingCard/MeetingCard";
+import {useMeetingStore} from "../../store";
 
 
 interface MeetingsProps {
-    meetingsCacheProvider: ICache
+    meetingsCacheProvider?: ICache
     children?: ReactNode
 }
 
-export const Meetings = ({meetingsCacheProvider}: MeetingsProps) => {
+export const MeetingsOverview = ({}: MeetingsProps) => {
 
-    const [meetings, setMeetings] = useState<Meeting[]>([]);
+    const cache = useContext(CacheContext);
+
+    const {meetings, addMeetings} = useMeetingStore();
+    let navigate = useNavigate();
 
 
     // on load get the meetings
     useEffect(() => {
-        const savedMeetings = meetingsCacheProvider.get(MEETINGS);
+        const savedMeetings = cache?.get(MEETINGS);
 
         if (savedMeetings === null) {
             return
         }
 
-        setMeetings(savedMeetings.meetings)
+        addMeetings(savedMeetings.meetings);
 
-    }, [])
+    }, [cache])
 
 
     return (
-        <Box display='flex'  width='100%' padding={1}>
+        <Box display='flex' flexDirection={'column'} width='100%' padding={1}>
+            <Text variant='h4' component='h1'>Meetings</Text>
 
             {meetings && meetings.map((meeting) => (
-                <Box key={meeting.id}><Text>{meeting.name}</Text></Box>
-
+                <MeetingCard key={meeting.id} meeting={meeting}/>
             ))
             }
-            <Button sx={{width: '100%'}} variant="outlined" onClick={() => console.log('hello')}>Create meeting</Button>
+            <Button sx={{width: '100%'}} variant="contained" onClick={() =>navigate('/meetings/new')}>Create
+                meeting</Button>
         </Box>
     );
 };
+
+
