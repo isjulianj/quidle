@@ -1,9 +1,9 @@
 import React, {ReactNode, useContext, useEffect} from 'react';
 import {Box, Button, Text} from '../../../../lib/ui-components';
-import {ICache} from "../../../../lib/services/ICache";
-import {MEETINGS} from "../../../../lib/services/MeetingCacheAdapter";
-import {useNavigate, useParams} from "react-router-dom";
-import {CacheContext} from "../../../../context/cache";
+import {ICache} from "../../../../lib/services/context/cache/ICache";
+import {MEETINGS} from "../../../../lib/services/context/cache/MeetingCacheAdapter";
+import {useNavigate} from "react-router-dom";
+import {CacheContext} from "../../../../lib/services/context/cache";
 import {MeetingCard} from "../../components/meetingCard/MeetingCard";
 import {useMeetingStore} from "../../store";
 

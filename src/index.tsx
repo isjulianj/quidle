@@ -11,8 +11,8 @@ import Meetings from "./routes/meetings";
 import NotFound from "./routes/notFound";
 import Meeting from "./routes/meeting";
 
-import {CacheProvider} from "./context/cache";
-import {MeetingsLocalCacheAdapter} from "./lib/services/MeetingCacheAdapter";
+import {CacheProvider} from "./lib/services/context/cache";
+import {MeetingsLocalCacheAdapter} from "./lib/services/context/cache/MeetingCacheAdapter";
 
 
 const meetingsStoreAdapter = new MeetingsLocalCacheAdapter();

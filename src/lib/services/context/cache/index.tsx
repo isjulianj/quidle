@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {ICache} from "../../lib/services/ICache";
+import {ICache} from "./ICache";
 
 
 export const CacheContext = React.createContext<ICache | null>(null);

@@ -1,4 +1,4 @@
-import {Meeting} from "../../core/domain/models/meeting";
+import {Meeting} from "../../../../core/domain/models/meeting";
 import {ICache} from "./ICache";
 
 

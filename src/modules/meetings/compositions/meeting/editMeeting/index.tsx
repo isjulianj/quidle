@@ -17,8 +17,8 @@ import {Attendant} from "../../../../../core/domain/models/attendant";
 import {useBuildAttendant} from "../../../../../lib/hooks/use-build-attendant";
 import {Box, Button, Text} from '../../../../../lib/ui-components';
 import {Meeting} from "../../../../../core/domain/models/meeting";
-import {MEETINGS} from "../../../../../lib/services/MeetingCacheAdapter";
-import {CacheContext} from "../../../../../context/cache";
+import {MEETINGS} from "../../../../../lib/services/context/cache/MeetingCacheAdapter";
+import {CacheContext} from "../../../../../lib/services/context/cache";
 
 
 export const EditMeeting = () => {
