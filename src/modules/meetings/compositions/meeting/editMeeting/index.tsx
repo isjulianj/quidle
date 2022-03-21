@@ -10,7 +10,6 @@ import {
 } from "../../../../../lib/services/location/LocationSearchAdapterInterface";
 import {Extent} from "../../../../../lib/extent/Extent";
 import {useBuildLocation} from "../../../../../lib/hooks/use-build-location/useBuildLocation";
-import {Location} from "../../../../../core/domain/models/location";
 import {AttendantModal} from "../../../components/attendantModal";
 import {AttendantDetailForm} from "../../../components/attendantDetailForm";
 import {Attendant} from "../../../../../core/domain/models/attendant";
@@ -19,6 +18,7 @@ import {Box, Button, Text} from '../../../../../lib/ui-components';
 import {Meeting} from "../../../../../core/domain/models/meeting";
 import {MEETINGS} from "../../../../../lib/services/context/cache/MeetingCacheAdapter";
 import {CacheContext} from "../../../../../lib/services/context/cache";
+import MapComponent from "../../../../../lib/components/mapProvider/mapComponent";
 
 
 export const EditMeeting = () => {
@@ -28,8 +28,7 @@ export const EditMeeting = () => {
     const {buildLocation} = useBuildLocation();
     const {buildAttendant} = useBuildAttendant();
     const [seeInput, setSeeInput] = useState<boolean>(false);
-    const [selectedLocation, setSelectedLocation] = useState<Location>()
-    const [editExistingAttendant, setEditExistingAttendant] = useState<boolean>(false)
+    const [editExistingAttendant] = useState<boolean>(false)
     const [selectedAttendant, setSelectedAttendant] = useState<Attendant>()
     const [showAttendantModal, setShowAttendantModal] = useState<boolean>(false)
     const [meeting, setMeeting] = useState<any>()
@@ -38,7 +37,7 @@ export const EditMeeting = () => {
 
     // when navigating to the page without coming from meetings page
     useEffect(() => {
-        if(meetings.length > 0) {
+        if (meetings.length > 0) {
             setMeeting(meetings.find((meeting: Meeting) => meeting.id === params.meetingId))
             return
         }
@@ -91,7 +90,15 @@ export const EditMeeting = () => {
 
     }
 
+    const closeAttendantModal = () => {
+        console.log('closed')
+        setShowAttendantModal(false)
+        setSelectedAttendant(undefined)
+    }
+
+
     const saveAttendant = (meetingId: string, attendant: Attendant) => {
+        closeAttendantModal()
         addAttendant(meetingId, attendant)
     }
 
@@ -99,19 +106,14 @@ export const EditMeeting = () => {
     // Attendant selected
     // open modal
     useEffect(() => {
-        if (selectedAttendant) {
-            console.log('selectedLocation', selectedLocation)
+        if (selectedAttendant !== undefined) {
+            debugger;
+            console.log('hi Imopneing it')
             setShowAttendantModal(true)
         }
 
-
     }, [selectedAttendant, meetings])
 
-
-    const closeAttendantModal = () => {
-        console.log('closed')
-        setShowAttendantModal(!showAttendantModal)
-    }
 
     return (
         <>
@@ -128,7 +130,7 @@ export const EditMeeting = () => {
                             <Box>
                                 <LocationSearchInput
                                     onSelected={onSelected}
-                                    onSearchCleared={(e) => setSeeInput(false)}
+                                    onSearchCleared={(_) => setSeeInput(false)}
                                 />
                             </Box>
                         </Slide> :
@@ -137,6 +139,7 @@ export const EditMeeting = () => {
 
                 </MeetingHeader>
                 <Box>
+                    {/*TODO: What happens whrn you create a meeting. */}
                     {meeting &&
                     <MeetingForm meeting={meeting}/>
                     }
@@ -144,19 +147,25 @@ export const EditMeeting = () => {
 
                 <Box>
                     <Text variant='subtitle1'>Attendants</Text>
-                    {/*{meeting && meeting.attendants.map(attendant => <Box key={attendant.name}>{attendant.name}</Box>)}*/}
+                    {meeting && meeting.attendants.map((attendant: Attendant) => <Box key={attendant.name}>{attendant.name}</Box>)}
                 </Box>
 
             </Box>
             <AttendantModal open={showAttendantModal} handleClose={closeAttendantModal}
                             isEdit={editExistingAttendant}>
 
-                <Box padding={2}>
-                    {selectedAttendant &&
-                    <AttendantDetailForm attendant={selectedAttendant} handleSave={saveAttendant}/>
-                    }
+                {selectedAttendant && (
+                    <>
+                        <MapComponent center={selectedAttendant.location.coords} zoom={12}/>
+                        <Box padding={2}>
+                            {JSON.stringify(selectedAttendant)}
+                            <AttendantDetailForm attendant={selectedAttendant} handleSave={saveAttendant}/>
+                        </Box>
+                    </>
+                )
+                }
 
-                </Box>
+
             </AttendantModal>
 
         </>

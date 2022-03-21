@@ -28,6 +28,7 @@ export const getAttendantLocation = (attendant: Attendant) => {
 export const updateAttendant = (attendant: Attendant, updatedAttendant: IAttendantUpdateProperties) => {
     return {
         ...attendant,
+        name: updatedAttendant.name,
         location: {...attendant.location, name: updatedAttendant.locationName},
         user: {...attendant.user, email: updatedAttendant.email}
     }

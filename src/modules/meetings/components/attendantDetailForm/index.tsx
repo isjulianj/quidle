@@ -9,8 +9,7 @@ const ariaLabel = {'aria-label': 'description'};
 interface AttendantDetailFormProps {
     attendant: Attendant;
     setAttendant?: any;
-    // TODO: type
-    handleSave: any
+    handleSave: (meetingId: string, updatedAttendant: Attendant) => void;
 }
 
 export const AttendantDetailForm = ({attendant, handleSave}: AttendantDetailFormProps) => {
@@ -40,10 +39,8 @@ export const AttendantDetailForm = ({attendant, handleSave}: AttendantDetailForm
 
     const save = (e: any) => {
         e.preventDefault();
-
-        const updatedAttendant = updateAttendant(attendant, {name, locationName, email});
-        //TODO: sort update out
-        handleSave(attendant?.meetingId, attendant)
+        const updatedAttendant  = updateAttendant(attendant, {name, locationName, email});
+        handleSave(attendant?.meetingId, updatedAttendant as Attendant)
 
 
     }

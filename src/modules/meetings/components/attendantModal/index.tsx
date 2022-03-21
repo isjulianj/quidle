@@ -1,4 +1,4 @@
-import {AppBar, Button, Dialog, IconButton, Slide, Toolbar} from '@mui/material';
+import {AppBar, Dialog, IconButton, Slide, Toolbar} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, {ReactNode} from 'react';
 import {TransitionProps} from "@mui/material/transitions";
@@ -45,9 +45,6 @@ export const AttendantModal = ({open, handleClose, isEdit = false, children}: At
                         <Text sx={{ml: 2, flex: 1}} variant="h6" component="div">
                             {AttendantTitle(isEdit, {} as Attendant)}
                         </Text>
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
-                        </Button>
                     </Toolbar>
                 </AppBar>
                 {children}

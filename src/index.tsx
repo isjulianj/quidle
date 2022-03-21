@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider as MaterialThemeProvider} from "@mui/material";
 import {theme} from "./lib/theme";
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import Meetings from "./routes/meetings";
 import NotFound from "./routes/notFound";
 import Meeting from "./routes/meeting";
@@ -26,7 +26,7 @@ ReactDOM.render(
                 <CacheProvider meetingsCacheProvider={meetingsStoreAdapter}>
                     <Routes>
                         <Route path="/" element={<App/>}>
-                            {/*<Route path="/" element={<Navigate replace to="/meetings"/>}/>*/}
+                            <Route path="/" element={<Navigate replace to="/meetings"/>}/>
                             <Route path="meetings" element={<Meetings/>}/>
                             <Route path="meetings/:meetingId" element={<Meeting/>}/>
                             <Route
