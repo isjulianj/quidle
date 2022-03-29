@@ -15,7 +15,7 @@ export default function MeetingComponent() {
 
     return (
         <MapProvider>
-            <Box sx={{paddingX: 2, paddingTop: 2}}>
+            <Box sx={{ paddingTop: 2}}>
                 {renderMeetingComponent()}
             </Box>
         </MapProvider>

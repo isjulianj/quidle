@@ -10,6 +10,7 @@ interface IMeetingsState {
     removeMeeting: (id: string) => void;
     updateMeeting: (meeting: Meeting) => void;
     addAttendant: (meetingId: string, attendant: Attendant) => void;
+    updateSingleAttendant: (attendant: Attendant) => void;
 }
 
 
@@ -87,6 +88,26 @@ const useStore = create<IMeetingsState>(set => ({
                 } else {
                     return item;
                 }
+            })
+        })),
+    updateSingleAttendant: (attendant: Attendant) =>
+        set((state) => ({
+            meetings: state.meetings.map((item: Meeting) => {
+                if (item.id === attendant.meetingId) {
+                    item.attendants.map(a => {
+                        if (a.id === attendant.id) {
+                            return {
+                                ...a,
+                                name: attendant.name,
+                                user: {...a.user, email: attendant.user?.email},
+                                location: {...a.location, name: attendant.location?.name},
+                            }
+                        }
+                    })
+
+                }
+                return item;
+
             })
         })),
 

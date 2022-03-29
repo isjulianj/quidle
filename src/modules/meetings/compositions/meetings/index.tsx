@@ -18,15 +18,16 @@ export const MeetingsOverview = ({}: MeetingsProps) => {
     const cache = useContext(CacheContext);
 
     const {meetings, addMeetings} = useMeetingStore();
-    let navigate = useNavigate();
-
 
     // on load get the meetings
     useEffect(() => {
         const savedMeetings = cache?.get(MEETINGS);
 
         if (savedMeetings === null) {
-            return
+            cache?.setTestData('MEETINGS');
+            const newMeetings = cache?.get(MEETINGS);
+            addMeetings(newMeetings.meetings);
+            return;
         }
 
         addMeetings(savedMeetings.meetings);
@@ -42,8 +43,8 @@ export const MeetingsOverview = ({}: MeetingsProps) => {
                 <MeetingCard key={meeting.id} meeting={meeting}/>
             ))
             }
-            <Button sx={{width: '100%'}} variant="contained" onClick={() =>navigate('/meetings/new')}>Create
-                meeting</Button>
+            {/*<Button sx={{width: '100%'}} variant="contained" onClick={() =>navigate('/meetings/new')}>Create*/}
+            {/*    meeting</Button>*/}
         </Box>
     );
 };

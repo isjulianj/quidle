@@ -7,14 +7,15 @@ export const Header = () => {
 
     return (
         <header>
-            <Box sx={{
+            <Box  sx={{
                 display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingX: 2,
-                paddingY: 1, backgroundColor: '#e0e0e0'
+                paddingY: 1, boxShadow: 3,
             }}>
-                <NavLink to='/'>
-                    <Text>Quidle</Text>
-                </NavLink>
-                <Avatar variant="circular"/>
+                    <NavLink to='/'>
+                        <Text>Quidle</Text>
+                    </NavLink>
+                    <Avatar variant="circular"/>
+
             </Box>
         </header>
     );

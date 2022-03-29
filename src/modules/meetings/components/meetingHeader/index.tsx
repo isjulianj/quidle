@@ -3,7 +3,7 @@ import {Box, Text} from "../../../../lib/ui-components";
 
 interface MeetingHeaderProps {
     heading:string | undefined;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 function MeetingHeader({heading, children} :MeetingHeaderProps) {

@@ -20,7 +20,7 @@ export class MeetingsLocalCacheAdapter implements ICache {
             window.localStorage.setItem(key, JSON.stringify(this.createMeeting(meeting)))
         } else {
 
-            // TODO: check fro expiration;
+            // TODO: check for expiration;
             // if(existingMeetings.expires !== undefined)
             // update existing data
             const meetings = existingMeetings.meetings;
@@ -59,49 +59,93 @@ export class MeetingsLocalCacheAdapter implements ICache {
         }
     }
 
+    setTestData(key = MEETINGS) {
+        // get the existing data
+        const existingMeetings = this.get(key);
+
+        // set new data
+        if (existingMeetings === null) {
+            window.localStorage.setItem(key, JSON.stringify(DUMMY_MEETINGS_DATA));
+        }
+    }
+
 }
-// const DUMMY_MEETINGS_DATA = {
-//     meetings: [
-//         {
-//             id: '1',
-//             name: 'meeting 3',
-//             meetingStatus: 'planning',
-//             createdDate: new Date().toISOString(),
-//             modifiedDate: new Date().toISOString(),
-//             centroid: 'Location',
-//             user: {
-//                 id: 1,
-//                 name: 'Julian',
-//                 email: 'isjulian@gmail.com',
-//                 meetings: []
-//             },
-//             attendants: [{
-//                 id: '1',
-//                 name: 'test',
-//                 isUser: false,
-//                 location: 'nowhere'
-//             }]
-//         },
-//         {
-//             id: '2',
-//             name: 'meeting 2',
-//             meetingStatus: 'planning',
-//             createdDate: new Date().toISOString(),
-//             modifiedDate: new Date().toISOString(),
-//             centroid: 'Location',
-//             user: {
-//                 id: 1,
-//                 name: 'Julian',
-//                 email: 'isjulian@gmail.com',
-//                 meetings: []
-//             },
-//             attendants: [{
-//                 id: '1',
-//                 name: 'test',
-//                 isUser: false,
-//                 location: 'nowhere'
-//             }],
-//         }
-//     ],
-//     expires: new Date().toISOString()
-// }
+
+const DUMMY_MEETINGS_DATA = {
+    meetings: [
+        {
+            id: '1',
+            name: 'meeting 3',
+            meetingStatus: 'planning',
+            createdDate: new Date().toISOString(),
+            modifiedDate: new Date().toISOString(),
+            centroid: 'Location',
+            user: {
+                id: '1',
+                name: 'Julian',
+                email: 'isjulian@gmail.com',
+                meetings: []
+            },
+            attendants: [{
+                "id": 0.44789741912253156,
+                "name": "Jules",
+                "location": {
+                    "bounds": {
+                        "minX": 41.65587,
+                        "minY": 12.23443,
+                        "maxX": 42.14096,
+                        "maxY": 12.85586
+                    },
+                    "coords": [
+                        12.49427,
+                        41.89056
+                    ],
+                    "name": "Rome"
+                },
+                "meetingId": "2",
+                "isUser": false,
+                "user": {
+                    "email": "Test@email.com"
+                }
+            }
+            ]
+        },
+        {
+            id: '2',
+            name: 'meeting 2',
+            meetingStatus: 'planning',
+            createdDate: new Date().toISOString(),
+            modifiedDate: new Date().toISOString(),
+            centroid: 'Location',
+            user: {
+                id: '1',
+                name: 'Julian',
+                email: 'isjulian@gmail.com',
+                meetings: []
+            },
+            attendants: [{
+                "id": 0.44789741912253156,
+                "name": "Jules",
+                "location": {
+                    "bounds": {
+                        "minX": 41.65587,
+                        "minY": 12.23443,
+                        "maxX": 42.14096,
+                        "maxY": 12.85586
+                    },
+                    "coords": [
+                        12.49427,
+                        41.89056
+                    ],
+                    "name": "Rome"
+                },
+                "meetingId": "2",
+                "isUser": false,
+                "user": {
+                    "email": "Test@email.com"
+                }
+            }],
+        }
+    ],
+    expires: new Date().toISOString()
+}

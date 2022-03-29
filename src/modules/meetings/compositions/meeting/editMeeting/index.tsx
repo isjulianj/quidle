@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {MeetingForm} from "../../../components/meetingFormInput/MeetingForm";
 import {useMeetingStore} from "../../../store";
 import {useParams} from "react-router-dom";
-import {Slide} from "@mui/material";
+import {Divider, Slide} from "@mui/material";
 import MeetingHeader from "../../../components/meetingHeader";
 import {LocationSearchInput} from "../../../../../lib/components/locationSearch";
 import {
@@ -19,6 +19,7 @@ import {Meeting} from "../../../../../core/domain/models/meeting";
 import {MEETINGS} from "../../../../../lib/services/context/cache/MeetingCacheAdapter";
 import {CacheContext} from "../../../../../lib/services/context/cache";
 import MapComponent from "../../../../../lib/components/mapProvider/mapComponent";
+import {AttendantCard} from "../../../components/attendantCard";
 
 
 export const EditMeeting = () => {
@@ -28,7 +29,7 @@ export const EditMeeting = () => {
     const {buildLocation} = useBuildLocation();
     const {buildAttendant} = useBuildAttendant();
     const [seeInput, setSeeInput] = useState<boolean>(false);
-    const [editExistingAttendant] = useState<boolean>(false)
+    const [editExistingAttendant, setEditExistingAttendant] = useState<boolean>(false)
     const [selectedAttendant, setSelectedAttendant] = useState<Attendant>()
     const [showAttendantModal, setShowAttendantModal] = useState<boolean>(false)
     const [meeting, setMeeting] = useState<any>()
@@ -53,9 +54,21 @@ export const EditMeeting = () => {
 
     }, [cache, meetings])
 
+    useEffect(() => {
+
+        const escapeAttendantSearch = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && seeInput) {
+                setSeeInput(false);
+            }
+        }
+        window.addEventListener('keyup', escapeAttendantSearch)
+
+        return () => window.removeEventListener('keyup', escapeAttendantSearch)
+    }, [seeInput])
+
 
     const onSelected: ResultsSelected = (event): void => {
-
+        closeSearchInput()
         if (meeting?.id === undefined) {
             // TODO: tell user that meeting couldnt be selected.
             return
@@ -91,15 +104,24 @@ export const EditMeeting = () => {
     }
 
     const closeAttendantModal = () => {
-        console.log('closed')
         setShowAttendantModal(false)
+        setEditExistingAttendant(false)
         setSelectedAttendant(undefined)
     }
+
+    const closeSearchInput = () => setSeeInput(false)
 
 
     const saveAttendant = (meetingId: string, attendant: Attendant) => {
         closeAttendantModal()
+        console.log('attendant', attendant)
         addAttendant(meetingId, attendant)
+        // updateSingleAttendant(attendant)
+    }
+
+    const editAttendant = (attendant: Attendant) => {
+        setEditExistingAttendant(true)
+        setSelectedAttendant(attendant)
     }
 
 
@@ -107,7 +129,6 @@ export const EditMeeting = () => {
     // open modal
     useEffect(() => {
         if (selectedAttendant !== undefined) {
-            debugger;
             console.log('hi Imopneing it')
             setShowAttendantModal(true)
         }
@@ -117,38 +138,45 @@ export const EditMeeting = () => {
 
     return (
         <>
-            <Box>
-
-                <MeetingHeader heading='Edit the meeting.'>
-                    {seeInput ?
-                        <Slide
-                            direction="left"
-                            in={seeInput}
-                            mountOnEnter
-                            unmountOnExit
-                        >
-                            <Box>
-                                <LocationSearchInput
-                                    onSelected={onSelected}
-                                    onSearchCleared={(_) => setSeeInput(false)}
-                                />
-                            </Box>
-                        </Slide> :
-                        <Button onClick={() => setSeeInput(true)}>Add Attendant</Button>
-                    }
-
-                </MeetingHeader>
-                <Box>
-                    {/*TODO: What happens whrn you create a meeting. */}
-                    {meeting &&
-                    <MeetingForm meeting={meeting}/>
-                    }
+            <Box height='100%'>
+                <Box className='meeting-header' sx={{px: 2}}>
+                    <MeetingHeader heading='Edit the meeting.'/>
+                    <Box>
+                        {/*TODO: What happens when you create a meeting. */}
+                        {meeting &&
+                        <MeetingForm meeting={meeting}/>
+                        }
+                    </Box>
                 </Box>
 
-                <Box>
-                    <Text variant='subtitle1'>Attendants</Text>
-                    {meeting && meeting.attendants.map((attendant: Attendant) => <Box key={attendant.name}>{attendant.name}</Box>)}
+                <Box className='meeting-attendants'
+                     sx={{bgcolor: 'info.main', color: 'background.paper', p: 2, overflowY: 'scroll'}}>
+                    <Box display='flex' justifyContent='space-between' alignItems='center' marginBottom={2}>
+                        <Text variant='h6'>Attendants</Text>
+                        {seeInput ?
+                            <Slide
+                                direction="left"
+                                in={seeInput}
+                                mountOnEnter
+                                unmountOnExit
+                            >
+                                <Box>
+                                    <LocationSearchInput
+                                        onSelected={onSelected}
+                                        onSearchCleared={(_) => setSeeInput(false)}
+                                    />
+                                </Box>
+                            </Slide> :
+                            <Button variant='contained' color='secondary' onClick={() => setSeeInput(true)}>Add</Button>
+                        }
+                    </Box>
+                    <Divider variant='fullWidth' sx={{marginBottom: 2}}/>
+                    <Box className='meeting-attendants__attendant-list'>
+                        {meeting && meeting.attendants.map((attendant: Attendant) => <Box
+                            key={attendant.name}><AttendantCard attendant={attendant} action={editAttendant}/></Box>)}
+                    </Box>
                 </Box>
+
 
             </Box>
             <AttendantModal open={showAttendantModal} handleClose={closeAttendantModal}
